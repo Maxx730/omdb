@@ -1,13 +1,13 @@
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import * as Font from 'expo-font';
-import { View,StyleSheet,Text } from 'react-native';
-import Constants from 'expo-constants';
+import { Image } from 'react-native';
+import { Container,Content,Footer,FooterTab,Button,Text,Icon } from 'native-base';
+import Styles from './src/utils/styles';
 
-import AppHeader from './src/components/AppHeader';
-import MovieSearch from './src/components/MovieSearch';
-import MovieList from './src/components/MovieList';
-import MovieDetails from './src/components/MovieDetails';
+import TabHomeView from './src/views/TabHomeView';
+import TabSearchView from './src/views/TabSearchView';
+import TabSwitchView from './src/views/TabSwitchView';
 
 const styles = {
 	AppLayout: {
@@ -21,7 +21,8 @@ export default class App extends React.Component {
 
 		this.state = {
 			loading: true,
-			movie: null
+			movie: null,
+			activeTab: 'home'
 		}
 
 		this.setMovie = this.setMovie.bind(this);
@@ -45,6 +46,21 @@ export default class App extends React.Component {
 		});
 	}
 
+	//Depending on the active tab return different views.
+	getView() {
+		switch(this.state.activeTab) {
+			case 'search':
+				return <TabSearchView/>
+			break;
+			case 'switch':
+				return <TabSwitchView/>
+			break;
+			default:
+				return <TabHomeView/>
+			break;
+		}
+	}
+
 	render() {
 		if(this.state.loading) {
 			return (
@@ -54,11 +70,41 @@ export default class App extends React.Component {
 			);
 		} else {
 			return (
-				<View style={styles.AppLayout}>
+				<Container>
 					{
-						this.state.movie ? <MovieDetails setMovie={this.setMovie} movieId={this.state.movie}/> : <><MovieSearch/><MovieList setMovie={this.setMovie}/></>
+						this.getView()
 					}
-				</View>
+					<Content/>
+					<Footer style={[Styles.FooterTransparent]}>
+						<FooterTab style={[Styles.FooterTabTransparent]} active>
+							<Button style={[this.state.activeTab === 'home' && Styles.ActiveTab]} onPress={() => {
+								this.setState({
+									activeTab: 'home'
+								});
+							}}>
+								<Icon style={[Styles.TabIcon]} name="home" />
+							</Button>
+						</FooterTab>
+						<FooterTab style={[Styles.FooterTabTransparent]}>
+							<Button style={[this.state.activeTab === 'search' && Styles.ActiveTab]} onPress={() => {
+								this.setState({
+									activeTab: 'search'
+								});
+							}}>
+								<Icon style={[Styles.TabIcon]} name="search" />
+							</Button>
+						</FooterTab>
+						<FooterTab style={[Styles.FooterTabTransparent]}>
+							<Button style={[this.state.activeTab === 'switch' && Styles.ActiveTab]} onPress={() => {
+								this.setState({
+									activeTab: 'switch'
+								});
+							}}>
+								<Icon style={[Styles.TabIcon]} name="switch" />
+							</Button>
+						</FooterTab>
+					</Footer>
+				</Container>
 			);
 		}
 	}

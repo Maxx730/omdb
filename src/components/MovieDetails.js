@@ -1,11 +1,13 @@
 import React from 'react';
-import { Dimensions,View,Text,StyleSheet,Image } from 'react-native';
+import { Dimensions,View,Text,StyleSheet,Image,ScrollView } from 'react-native';
 import { Spinner,Icon } from 'native-base';
 import { apiRequest } from '../utils/ApiConfig';
 import Values from '../values/values';
 import TextTicker from 'react-native-text-ticker';
 import values from '../values/values';
 import Constants from 'expo-constants';
+import Rating from './Rating';
+import Styles from '../utils/styles';
 
 const styles = StyleSheet.create({
 	MovieDetails: {
@@ -50,14 +52,15 @@ const styles = StyleSheet.create({
 		shadowRadius: 2.22
 	},
 	PlotContent: {
-		top: Values.sizeExtraLarge * 7.5
+		top: Values.sizeExtraLarge * 8.05
 	},
 	CastContent: {
 		paddingLeft: values.sizeMedium
 	},
 	SectionTitle: {
 		fontSize: values.sizeMedium,
-		fontWeight: 'bold'
+		fontWeight: 'bold',
+		paddingBottom: values.sizeSmall / 2
 	}
 })
 
@@ -77,6 +80,10 @@ export default class MovieDetails extends React.Component {
 				details: data
 			});
 		});
+	}
+
+	handleNA(value) {
+		return value === 'N/A' ? '--' : value 
 	}
 
 	render() {
@@ -110,7 +117,7 @@ export default class MovieDetails extends React.Component {
 							loop
 							repeatSpacer={100}
 							marqueeDelay={2000}>
-								{this.state.details.Rated} | {this.state.details.Runtime} | {this.state.details.Genre} | {this.state.details.Released}
+								{this.handleNA(this.state.details.Rated)} | {this.handleNA(this.state.details.Runtime)} | {this.handleNA(this.state.details.Genre)} | {this.handleNA(this.state.details.Released)}
 							</TextTicker>
 						</View>
 						<View style={[styles.MovieInfo,styles.PosterContent]}>
@@ -137,11 +144,18 @@ export default class MovieDetails extends React.Component {
 							<Text style={[styles.WhiteContent,styles.SectionTitle]}>
 								Plot Summary
 							</Text>
-							<Text style={[styles.WhiteContent]}>
-								{
-									this.state.details.Plot
-								}
-							</Text>
+							<ScrollView style={{height: 100}}>
+								<Text style={[styles.WhiteContent]}>
+									{
+										this.state.details.Plot
+									}
+								</Text>
+							</ScrollView>
+						</View>
+						<View style={[styles.MovieInfo,Styles.RatingsContent]}>
+							<View style={[Styles.HorizontalLayout]}>
+
+							</View>
 						</View>
 					</View> : <Spinner/>
 				}

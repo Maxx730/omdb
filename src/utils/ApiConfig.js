@@ -1,5 +1,5 @@
-const ApiUrl = 'http://www.omdbapi.com/';
-const apiKey = '&apikey=511afc79';
+const ApiUrl = 'https://api.themoviedb.org/3/';
+const apiKey = '&api_key=39dd8b1434e6b00477e3af7625a1b16e';
 
 export function apiRequest(path,method,body,json) {
 	method = method || 'GET';
