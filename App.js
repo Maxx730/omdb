@@ -8,6 +8,7 @@ import Styles from './src/utils/styles';
 import TabHomeView from './src/views/TabHomeView';
 import TabSearchView from './src/views/TabSearchView';
 import TabSwitchView from './src/views/TabSwitchView';
+import MovieDetails from './src/views/MovieDetails';
 
 const styles = {
 	AppLayout: {
@@ -48,16 +49,20 @@ export default class App extends React.Component {
 
 	//Depending on the active tab return different views.
 	getView() {
-		switch(this.state.activeTab) {
-			case 'search':
-				return <TabSearchView/>
-			break;
-			case 'switch':
-				return <TabSwitchView/>
-			break;
-			default:
-				return <TabHomeView/>
-			break;
+		if(this.state.movie) {
+			return <MovieDetails setMovie={this.setMovie} movie={this.state.movie}/>
+		} else {
+			switch(this.state.activeTab) {
+				case 'search':
+					return <TabSearchView setMovie={this.setMovie}/>
+				break;
+				case 'switch':
+					return <TabSwitchView setMovie={this.setMovie}/>
+				break;
+				default:
+					return <TabHomeView setMovie={this.setMovie}/>
+				break;
+			}
 		}
 	}
 
@@ -75,7 +80,8 @@ export default class App extends React.Component {
 						this.getView()
 					}
 					<Content/>
-					<Footer style={[Styles.FooterTransparent]}>
+					{
+						!this.state.movie && <Footer style={[Styles.FooterTransparent]}>
 						<FooterTab style={[Styles.FooterTabTransparent]} active>
 							<Button style={[this.state.activeTab === 'home' && Styles.ActiveTab]} onPress={() => {
 								this.setState({
@@ -104,6 +110,8 @@ export default class App extends React.Component {
 							</Button>
 						</FooterTab>
 					</Footer>
+					}
+
 				</Container>
 			);
 		}
