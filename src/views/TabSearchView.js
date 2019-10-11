@@ -47,7 +47,9 @@ export default class TabSearchView extends React.Component {
 								<List>
 									{
 										this.state.results.map((result,index) => {
-											return <ListItem key={`search-result-${index}`} noIndent={true} itemDivider={false}>
+											return <ListItem key={`search-result-${index}`} noIndent={true} itemDivider={false} onPress={() => {
+												this.props.setMovie(result.id)
+											}}>
 												<Left>
 													<Text style={[Styles.WhiteContent,Styles.SectionTitle]}>
 														{result.original_title}

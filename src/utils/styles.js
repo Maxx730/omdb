@@ -15,7 +15,8 @@ export default StyleSheet.create({
 	},
 	ImageBackground:{
 		width: Dimensions.get('window').width,
-		height: Dimensions.get('window').height
+		height: Dimensions.get('window').height,
+		backgroundColor: '#000000'
 	},
 	ShadeBackground: {
 		position: 'absolute',
@@ -88,6 +89,51 @@ export default StyleSheet.create({
 	},
 	SearchInput: {
 		paddingLeft: Values.sizeMedium
+	},
+	MovieDetails: {
+		position: 'absolute',
+		paddingTop: Values.sizeLarge,
+		bottom: 0,
+		top: 0,
+		left: 0,
+		right: 0,
+		paddingLeft: Values.sizeMedium,
+		paddingRight: Values.sizeMedium
+	},
+	MovieTitle: {
+		fontSize: Values.sizeLarge,
+		fontWeight: 'bold',
+		paddingTop: Values.sizeMedium
+	},
+	MoviePoster: {
+		width: 200,
+		height: 300,
+		borderRadius: 3
+	},
+	QuickInfo: {
+
+	},
+	PosterContent: {
+		flexDirection: 'row',
+		paddingTop: Values.sizeMedium
+	},
+	CastContent: {
+		paddingLeft: Values.sizeMedium
+	},
+	OverviewContent: {
+		paddingTop: Values.sizeMedium
+	},
+	BackButton: {
+		position: 'absolute',
+		left: Values.sizeMedium,
+		bottom: Values.sizeMedium
+	},
+	HorizontalLayout: {
+		flexDirection: 'column'
+	},
+	Star: {
+		color: '#E4BB23',
+		marginLeft: Values.sizeSmall
 	}
 });
 
