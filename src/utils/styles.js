@@ -8,6 +8,9 @@ export default StyleSheet.create({
 	HeadSpacing: {
 		height: 100
 	},
+	PushLeft: {
+		marginLeft: 6
+	},
 	EmptyBackground: {
 		backgroundColor: '#000000',
 		width: Dimensions.get('window').width,
@@ -53,7 +56,7 @@ export default StyleSheet.create({
 		paddingBottom: Values.sizeSmall / 2
 	},
 	MovieDisplayLayout: {
-		height: 300
+		
 	},
 	MovieCarousel: {
 		flex: 1,
@@ -79,6 +82,16 @@ export default StyleSheet.create({
 		fontSize: 32,
 		paddingLeft: 12
 	},
+	SubTitle: {
+		paddingLeft: 12,
+		paddingBottom: 6
+	},
+	SlideExtras: {
+		flex: 1,
+		flexDirection: 'row',
+		padding: 6,
+		paddingLeft: 12
+	},
 	SearchListPadding: {
 		padding: 12
 	},
@@ -88,7 +101,10 @@ export default StyleSheet.create({
 		padding: 24
 	},
 	SearchInput: {
-		paddingLeft: Values.sizeMedium
+		paddingLeft: Values.sizeMedium,
+		backgroundColor: 'rgba(255,255,255,.3)',
+		borderRadius: 3,
+		flexDirection: 'row'
 	},
 	MovieDetails: {
 		position: 'absolute',
@@ -134,6 +150,42 @@ export default StyleSheet.create({
 	Star: {
 		color: '#E4BB23',
 		marginLeft: Values.sizeSmall
+	},
+	DetailSpinner: {
+		backgroundColor: 'rgba(0,0,0,.66)',
+		height: Dimensions.get('window').height,
+		position: 'absolute',
+		zIndex: 999,
+		width: Dimensions.get('window').width,
+		justifyContent: 'center'
+	},
+	ExtraButton: {
+		backgroundColor: 'rgba(255,255,255,.3)'
+	},
+	TabFrame: {
+		flexDirection: 'row',
+		justifyContent: 'center'
+	},
+	TabItem: {
+		flexGrow: 1,
+		borderRadius: 0,
+		paddingLeft: 16,
+		paddingRight: 16,
+		paddingTop:8,
+		paddingBottom: 8,
+		color: '#FFFFFF'
+	},
+	TabItemLeft: {
+		borderLeftColor: '#FFFFFF',
+		borderLeftWidth: 1
+	},
+	TabItemRight: {
+		borderRightColor: '#FFFFFF',
+		borderRightWidth: 1
+	},
+	TabSelected: {
+		color: '#000000',
+		backgroundColor: '#FFFFFF'
 	}
 });
 

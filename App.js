@@ -9,6 +9,8 @@ import TabHomeView from './src/views/TabHomeView';
 import TabSearchView from './src/views/TabSearchView';
 import TabSwitchView from './src/views/TabSwitchView';
 import MovieDetails from './src/views/MovieDetails';
+import MoviesView from './src/views/MoviesView';
+import ShowsView from './src/views/ShowsView';
 
 const styles = {
 	AppLayout: {
@@ -23,10 +25,13 @@ export default class App extends React.Component {
 		this.state = {
 			loading: true,
 			movie: null,
+			show: null,
 			activeTab: 'home'
 		}
 
 		this.setMovie = this.setMovie.bind(this);
+		this.setShow = this.setShow.bind(this);
+		this.setActiveTab = this.setActiveTab.bind(this);
 	}
 
 	async componentDidMount() {
@@ -47,6 +52,18 @@ export default class App extends React.Component {
 		});
 	}
 
+	setShow(id) {
+		this.setState({
+			show: id
+		});
+	}
+
+	setActiveTab(tab) {
+		this.setState({
+			activeTab: tab
+		});
+	}
+	
 	//Depending on the active tab return different views.
 	getView() {
 		if(this.state.movie) {
@@ -54,13 +71,19 @@ export default class App extends React.Component {
 		} else {
 			switch(this.state.activeTab) {
 				case 'search':
-					return <TabSearchView setMovie={this.setMovie}/>
+					return <TabSearchView setShow={this.setShow} setMovie={this.setMovie}/>
 				break;
 				case 'switch':
-					return <TabSwitchView setMovie={this.setMovie}/>
+					return <TabSwitchView setShow={this.setShow} setMovie={this.setMovie}/>
+				break;
+				case 'movies':
+					return <MoviesView/>
+				break;
+				case 'shows':
+					return <ShowsView/>
 				break;
 				default:
-					return <TabHomeView setMovie={this.setMovie}/>
+					return <TabHomeView setTab={this.setActiveTab} setShow={this.setShow} setMovie={this.setMovie}/>
 				break;
 			}
 		}
@@ -84,27 +107,21 @@ export default class App extends React.Component {
 						!this.state.movie && <Footer style={[Styles.FooterTransparent]}>
 						<FooterTab style={[Styles.FooterTabTransparent]} active>
 							<Button style={[this.state.activeTab === 'home' && Styles.ActiveTab]} onPress={() => {
-								this.setState({
-									activeTab: 'home'
-								});
+								this.setActiveTab('home')
 							}}>
 								<Icon style={[Styles.TabIcon]} name="home" />
 							</Button>
 						</FooterTab>
 						<FooterTab style={[Styles.FooterTabTransparent]}>
 							<Button style={[this.state.activeTab === 'search' && Styles.ActiveTab]} onPress={() => {
-								this.setState({
-									activeTab: 'search'
-								});
+								this.setActiveTab('search')
 							}}>
 								<Icon style={[Styles.TabIcon]} name="search" />
 							</Button>
 						</FooterTab>
 						<FooterTab style={[Styles.FooterTabTransparent]}>
 							<Button style={[this.state.activeTab === 'switch' && Styles.ActiveTab]} onPress={() => {
-								this.setState({
-									activeTab: 'switch'
-								});
+								this.setActiveTab('switch');
 							}}>
 								<Icon style={[Styles.TabIcon]} name="switch" />
 							</Button>

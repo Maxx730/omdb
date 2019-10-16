@@ -25,12 +25,12 @@ export default class MovieDetails extends React.Component {
 
 			apiRequest(`movie/${this.props.movie}/credits`).then(data => {
 				this.setState({
-					credits: data,
-					loading: false
+					credits: data
 				});
 
 				setTimeout(() => {
 					this.setState({
+						loading: false,
 						dataTimeout: true
 					})
 				},700)
@@ -86,11 +86,12 @@ export default class MovieDetails extends React.Component {
 	render() {
 		return(<>
 			{
-				this.state.loading ? <Spinner color='#FFFFFF'></Spinner> : <><Image blurRadius={1.5} source={{uri:`https://image.tmdb.org/t/p/w500/${this.state.movie.backdrop_path}`}} style={[Styles.ImageBackground,{opacity: this.state.opacity}]}/><View style={[Styles.ShadeBackground]}></View></>
+				!this.state.loading && <><Image blurRadius={1.5} source={{uri:`https://image.tmdb.org/t/p/w500/${this.state.movie.backdrop_path}`}} style={[Styles.ImageBackground,{opacity: this.state.opacity}]}/><View style={[Styles.ShadeBackground]}></View></>
 			}
 		
 			<View style={[Styles.EmptyBackground]}>
 			</View>
+			{!this.state.dataTimeout && <Spinner style={[Styles.DetailSpinner]} color='#FFFFFF'></Spinner>}
 			{
 				this.state.dataTimeout && <View style={[Styles.MovieDetails]}>
 						<TextTicker
@@ -124,25 +125,6 @@ export default class MovieDetails extends React.Component {
 										</Text>
 									})
 								}
-							</View>
-						</View>
-						<View style={[Styles.OverviewContent]}>
-							<Text style={[Styles.WhiteContent,Styles.SectionTitle]}>
-								Details
-							</Text>
-							<View style={[Styles.HorizontalLayout]}>
-								<Text style={[Styles.WhiteContent]}>
-									{
-										`Revenue: $${this.formatNumber(this.state.movie.revenue)}`
-									}
-								</Text>
-							</View>
-							<View style={[Styles.HorizontalLayout]}>
-								<Text style={[Styles.WhiteContent]}>
-									{
-										`Budget: $${this.formatNumber(this.state.movie.budget)}`
-									}
-								</Text>
 							</View>
 						</View>
 						<View style={[Styles.OverviewContent]}>

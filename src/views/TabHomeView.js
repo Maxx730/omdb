@@ -1,5 +1,5 @@
 import React from 'react';
-import { View,Animated,ScrollView } from 'react-native';
+import { View,Animated,ScrollView,Button,Text } from 'react-native';
 import Styles from '../utils/styles';
 import { apiRequest } from '../utils/ApiConfig';
 import DisplaySlider from '../components/DisplaySlider';
@@ -14,11 +14,10 @@ export default class TabHomeView extends React.Component {
 			current: 0,
 			opacity: new Animated.Value(0),
 			movies: [],
+			shows: [],
 			popular: [],
-			best: [],
-			theaturesLoading: true,
-			popularLoading: true,
-			bestLoading: true,
+			moviesLoading: true,
+			showsLoading: true,
 			focused: null
 		}
 	}
@@ -69,23 +68,20 @@ export default class TabHomeView extends React.Component {
 	componentDidMount() {
 		apiRequest(`discover/movie?${this.getCurrentDateRange()}`).then(data => {
 			this.setState({
-				movies: data.results,
-				theaturesLoading: false
+				movies: data.results
 			});
-			this.fadeIn();
+			setTimeout(() => {
+				this.setState({
+					moviesLoading: false
+				})
+				this.fadeIn();
+			},500);
 		});
 
-		apiRequest('discover/movie?sort_by=popularity.desc').then(data => {
+		apiRequest('tv/popular').then(data => {
 			this.setState({
-				popular: data.results,
-				popularLoading: false
-			});
-		});
-
-		apiRequest(`discover/movie?primary_release_year${new Date().getFullYear()}=&sort_by=vote_average.asc`).then(data => {
-			this.setState({
-				best: data.results,
-				bestLoading: false
+				shows: data.results,
+				showsLoading: false
 			});
 		});
 	}
@@ -94,15 +90,30 @@ export default class TabHomeView extends React.Component {
 		return(
 			<View style={[Styles.EmptyBackground]}>
 				{
-					(this.state.movies && this.state.movies.length > 0) && <><Animated.Image blurRadius={1.5} source={{uri:`https://image.tmdb.org/t/p/w500/${this.state.movies[this.state.current].backdrop_path}`}} style={[Styles.ImageBackground,{opacity: this.state.opacity}]}/><View style={[Styles.ShadeBackground]}></View>
+					(this.state.movies && this.state.movies.length > 0) && <><Animated.Image blurRadius={1.5} source={{uri:`https://image.tmdb.org/t/p/w500/${this.state.movies[this.state.current].poster_path}`}} style={[Styles.ImageBackground,{opacity: this.state.opacity}]}/><View style={[Styles.ShadeBackground]}></View>
 					<View style={[{position: 'absolute',top: 0,left: 0,right: 0,bottom: 0}]}>
 						<ScrollView style={[Styles.TopPadding]}>
-							<DisplaySlider selectMovie={this.props.setMovie} loading={this.state.theaturesLoading} title='In Theaters' movies={this.state.movies}/>
-							<DisplaySlider selectMovie={this.props.setMovie} loading={this.state.popularLoading} title='Popular' movies={this.state.popular}/>
-							<DisplaySlider selectMovie={this.props.setMovie} loading={this.state.bestLoading} title={`Best of ` + new Date().getFullYear()} movies={this.state.best}/>
-							<View style={{height: 300}}>
-
-							</View>
+							<DisplaySlider selectMovie={this.props.setMovie} loading={this.state.moviesLoading} title='Movies' subtitle='See Whats Playing Near You' movies={this.state.movies} extras={[
+							{
+								label: 'Popular',
+								action: () => {
+									this.props.setTab('movies');
+								}
+							},
+							{
+								label: 'Showtimes',
+								action: () => {
+									this.props.setTab('movies');
+								}
+							},
+							{
+								label: 'Search',
+								action: () => {
+									this.props.setTab('search');
+								}
+							}
+							]}/>
+							<DisplaySlider selectShow={this.props.setShow} loading={this.state.showsLoading} title='TV Shows' subtitle='What to Binge Next?' movies={this.state.shows}/>
 						</ScrollView>
 					</View>
 					</>
